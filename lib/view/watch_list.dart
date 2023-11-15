@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:share_watchlist/controller/sql_helper.dart';
-import 'package:share_watchlist/model/company_model.dart';
+import 'package:share_watchlist/model/watctlist_item.dart';
+import 'package:share_watchlist/view/widgets/watchlist_tile.dart';
 
 class WatchList extends StatefulWidget {
   const WatchList({super.key});
@@ -13,8 +14,6 @@ class WatchList extends StatefulWidget {
 class _WatchListState extends State<WatchList> {
   @override
   Widget build(BuildContext context) {
-    // List<CompanyModel> watchList =
-    //     Provider.of<WatchListProvider>(context).watchList;
     return Scaffold(
         appBar: AppBar(
           elevation: 1,
@@ -35,28 +34,23 @@ class _WatchListState extends State<WatchList> {
               ),
               Consumer<WatchListProvider>(
                 builder: (context, model, child) {
-                  List<CompanyModel> result = model.watchList;
+                  List<Watchlistmodel> result = model.watchList;
+                  if (result.isEmpty) {
+                    return const Center(
+                      child: Text('No company added to watch list'),
+                    );
+                  }
                   return Expanded(
                     child: ListView.builder(
                       itemCount: result.length,
                       itemBuilder: (context, index) {
                         return Card(
-                          child: ListTile(
-                            title: Text(result[index].name),
-                          ),
-                        );
+                            child: WatchlistTile(
+                                companyDetails: result[index], index: index));
                       },
                     ),
                   );
                 },
-                // child: ListView.builder(
-                //   itemCount: 3,
-                //   itemBuilder: (context, index) {
-                //     return ListTile(
-                //       title: Text(watchList[index].name),
-                //     );
-                //   },
-                // ),
               ),
             ],
           ),
@@ -70,7 +64,10 @@ class _WatchListState extends State<WatchList> {
         padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
         child: Text(
           title,
-          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Color.fromARGB(255, 26, 66, 29)),
         ),
       ),
     );

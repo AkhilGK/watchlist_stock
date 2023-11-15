@@ -24,9 +24,6 @@ class _SearchScreenState extends State<SearchScreen> {
   bool isLoading = true;
   @override
   Widget build(BuildContext context) {
-    // List<CompanyModel> result =
-    //     Provider.of<SearchResult>(context, listen: false).searchResult;
-
     return Scaffold(
       appBar: AppBar(
         elevation: 1,
@@ -41,7 +38,7 @@ class _SearchScreenState extends State<SearchScreen> {
         padding: const EdgeInsets.all(12),
         child: Column(
           children: [
-            const Text('Enter Company Name'),
+            const Text('Try searching Company name...'),
             const SizedBox(
               height: 10,
             ),
@@ -65,7 +62,15 @@ class _SearchScreenState extends State<SearchScreen> {
               },
             ),
             isLoading
-                ? const SizedBox()
+                ? SizedBox(
+                    height: 300,
+                    child: Center(
+                      child: Image.asset(
+                        'profit_7185066.png',
+                        height: 200,
+                      ),
+                    ),
+                  )
                 : Expanded(
                     child: Consumer<SearchResult>(
                       builder: (context, searchResult, child) {
@@ -97,13 +102,6 @@ class _SearchScreenState extends State<SearchScreen> {
 
         Result res = Result.fromJson(data);
         context.read<SearchResult>().addResult(res.bestMatches);
-
-        // Provider.of<SearchResult>(context).addResult(res.bestMatches);
-        // setState(() {
-        //   // Result res = Result.fromJson(data);
-        //   // result = res.bestMatches;
-        //   isLoading = false;
-        // });
       }
     } catch (err) {
       debugPrint(err.toString());

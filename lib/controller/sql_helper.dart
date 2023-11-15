@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:share_watchlist/model/company_model.dart';
+import 'package:share_watchlist/model/watctlist_item.dart';
 import 'package:sqflite/sqflite.dart' as sql;
 
 class WatchListProvider extends ChangeNotifier {
-  List<CompanyModel> watchList = [];
+  List<Watchlistmodel> watchList = [];
   WatchListProvider() {
     refreshUi();
     // Call refreshUi when the provider is created.
@@ -57,7 +58,7 @@ class WatchListProvider extends ChangeNotifier {
   void refreshUi() async {
     watchList.clear();
     var data = await getList();
-    watchList.addAll(data.map((map) => CompanyModel.fromDb(map)).toList());
+    watchList.addAll(data.map((map) => Watchlistmodel.fromDb(map)).toList());
     notifyListeners();
   }
 }

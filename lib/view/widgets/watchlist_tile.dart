@@ -5,22 +5,23 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:share_watchlist/controller/sql_helper.dart';
-import 'package:share_watchlist/model/company_model.dart';
 import 'package:http/http.dart' as http;
-import 'package:share_watchlist/model/price_model.dart';
-
+import 'package:share_watchlist/model/watctlist_item.dart';
 import '../../controller/constants/constants.dart';
+import '../../model/price_model.dart';
 
-class CompanyTile extends StatelessWidget {
-  const CompanyTile({super.key, required this.companyDetails});
-  final CompanyModel companyDetails;
+class WatchlistTile extends StatelessWidget {
+  const WatchlistTile(
+      {super.key, required this.companyDetails, required this.index});
+  final Watchlistmodel companyDetails;
+  final int index;
 
   @override
   Widget build(BuildContext context) {
     WatchListProvider watchList = Provider.of<WatchListProvider>(context);
 
     return ListTile(
-      title: Row(
+      subtitle: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(companyDetails.symbol),
@@ -28,26 +29,24 @@ class CompanyTile extends StatelessWidget {
               future: getPrice(companyDetails.symbol),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const RefreshProgressIndicator(
-                    color: Color.fromARGB(157, 139, 195, 74),
-                  );
+                  return const RefreshProgressIndicator();
                 }
                 return Text(snapshot.data ?? '');
               })
         ],
       ),
-      subtitle: Text(companyDetails.name),
+      title: Text(companyDetails.name),
       trailing: IconButton(
           onPressed: () async {
-            await watchList.addData(companyDetails);
+            await watchList.deleteItem(companyDetails.id);
             ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-              content: Text("Item added successfully"),
+              content: Text("Item removed from watchlist"),
             ));
           },
           icon: const Icon(
-            Icons.add,
+            Icons.clear_rounded,
             size: 30,
-            color: Colors.green,
+            color: Colors.redAccent,
           )),
     );
   }
