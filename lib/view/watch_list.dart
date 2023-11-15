@@ -36,9 +36,9 @@ class _WatchListState extends State<WatchList> {
                 builder: (context, model, child) {
                   List<Watchlistmodel> result = model.watchList;
                   if (result.isEmpty) {
-                    return const Center(
-                      child: Text('No company added to watch list'),
-                    );
+                    return const SizedBox(
+                        height: 200,
+                        child: Text('No company added to watch list'));
                   }
                   return Expanded(
                     child: ListView.builder(

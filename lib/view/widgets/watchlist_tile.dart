@@ -38,10 +38,44 @@ class WatchlistTile extends StatelessWidget {
       title: Text(companyDetails.name),
       trailing: IconButton(
           onPressed: () async {
-            await watchList.deleteItem(companyDetails.id);
-            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-              content: Text("Item removed from watchlist"),
-            ));
+            showDialog(
+              context: context,
+              builder: (context) {
+                return Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: AlertDialog(
+                    title: const Text(
+                      'Delete?',
+                      style: TextStyle(
+                        color: Colors.red,
+                      ),
+                    ),
+                    content: const Text(
+                      "Do you want to delete this stock",
+                    ),
+                    actions: [
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: const Text('No'),
+                      ),
+                      TextButton(
+                        onPressed: () async {
+                          Navigator.of(context).pop();
+                          await watchList.deleteItem(companyDetails.id);
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(const SnackBar(
+                            content: Text("Item removed from watchlist"),
+                          ));
+                        },
+                        child: const Text('Yes'),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            );
           },
           icon: const Icon(
             Icons.clear_rounded,

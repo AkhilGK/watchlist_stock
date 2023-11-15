@@ -66,7 +66,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     height: 300,
                     child: Center(
                       child: Image.asset(
-                        'profit_7185066.png',
+                        'assets/profit_7185066.png',
                         height: 200,
                       ),
                     ),
@@ -98,7 +98,6 @@ class _SearchScreenState extends State<SearchScreen> {
           "https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=$keyWord&apikey=$apiKey"));
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
-        print(response.body);
 
         Result res = Result.fromJson(data);
         context.read<SearchResult>().addResult(res.bestMatches);
